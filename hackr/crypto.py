@@ -3,7 +3,6 @@ import os
 import bcrypt
 import whirlpool
 
-
 class Encrypt:
 
     def __init__(self, plain_text):
@@ -78,3 +77,14 @@ class Decrypt:
                     return plain_text
             return "Can not found this encrypted hash"
         return "Wordlist not accessible"
+
+
+def convert(plain_text, encrypted):
+    e = Encrypt(plain_text)
+    crypto_list = [f for f in dir(e) if callable(getattr(e, f)) and not f.startswith("__")]
+
+    for i in range(0, len(crypto_list)):
+        if getattr(e, crypto_list[i])() == encrypted:
+             return crypto_list[i]
+
+    return 'Can not found this encryption'
